@@ -6,6 +6,8 @@ function App() {
           MIAO WEBSITE
         </h1>
         <div className="w-20 h-1.5 bg-blue-700 mx-auto mt-6 rounded opacity-80" />
+              <p className="mt-8 text-slate-500 text-sm">CIT TOPS AGAIN!!!</p>
+
       </div>
     </div>
   );
