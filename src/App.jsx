@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import './App.css';
-import { defaultTheme, generateTheme } from './themes.js';
-import pages, { navLinks } from './pages.js';
+import ThemeGenerator from './models/ThemeGenerator.js';
+import pages, { navLinks } from './models/pages.js';
 import NavBar from './components/NavBar.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import Footer from './components/Footer.jsx';
 import ResetButton from './components/ResetButton.jsx';
 
 function App() {
-  const [theme, setTheme] = useState(defaultTheme);
+  const [theme, setTheme] = useState(ThemeGenerator.defaultTheme);
   const [page, setPage] = useState('Home');
 
   // The text comes from the page only. Themes change colors, not text.
   const content = pages[page];
 
   const navigate = (name) => setPage(name);
-  const randomizeTheme = () => setTheme(generateTheme());
+  const randomizeTheme = () => setTheme(ThemeGenerator.generateTheme());
   const resetTheme = () => {
-    setTheme(defaultTheme);
+    setTheme(ThemeGenerator.defaultTheme);
     setPage('Home');
   };
 
@@ -28,15 +28,7 @@ function App() {
     }
   };
 
-  const themeVars = {
-    '--accent': theme.accent,
-    '--bg-from': theme.bgFrom,
-    '--bg-to': theme.bgTo,
-    '--card-bg': theme.card,
-    '--text': theme.text,
-    '--muted': theme.muted,
-    '--nav': theme.nav,
-  };
+  const themeVars = theme.toCssVars();
 
   return (
     <div className="app" style={themeVars}>
@@ -54,7 +46,7 @@ function App() {
       </div>
       <ResetButton
         themeName={theme.name}
-        isDefault={theme === defaultTheme && page === 'Home'}
+        isDefault={theme === ThemeGenerator.defaultTheme && page === 'Home'}
         onReset={resetTheme}
       />
     </div>
