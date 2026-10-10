@@ -1,17 +1,62 @@
-function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-200 p-4">
-      <div className="bg-white/75 backdrop-blur-sm px-16 py-16 rounded-[64px] shadow-2xl border border-white/60 text-center transition-transform hover:scale-[1.01] max-sm:px-8 max-sm:py-10 max-sm:rounded-[40px]">
-      <p className="text-sm uppercase tracking-widest text-blue-700 font-semibold mb-2">
-          Hi, Welcome to
-        </p>
-        <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight text-slate-800 leading-tight m-0">
-          MIAO's WEBSITE
-        </h1>
-        <div className="w-20 h-1.5 bg-blue-700 mx-auto mt-6 rounded opacity-80" />
-              <p className="mt-8 text-slate-500 text-sm">CIT TOPS AGAIN!!!</p>
+import { useState } from 'react';
+import './App.css';
+import { defaultTheme, generateTheme } from './themes.js';
+import pages, { navLinks } from './pages.js';
+import NavBar from './components/NavBar.jsx';
+import HeroSection from './components/HeroSection.jsx';
+import Footer from './components/Footer.jsx';
+import ResetButton from './components/ResetButton.jsx';
 
+function App() {
+  const [theme, setTheme] = useState(defaultTheme);
+  const [page, setPage] = useState('Home');
+
+  // The text comes from the page only. Themes change colors, not text.
+  const content = pages[page];
+
+  const navigate = (name) => setPage(name);
+  const randomizeTheme = () => setTheme(generateTheme());
+  const resetTheme = () => {
+    setTheme(defaultTheme);
+    setPage('Home');
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      randomizeTheme();
+    }
+  };
+
+  const themeVars = {
+    '--accent': theme.accent,
+    '--bg-from': theme.bgFrom,
+    '--bg-to': theme.bgTo,
+    '--card-bg': theme.card,
+    '--text': theme.text,
+    '--muted': theme.muted,
+    '--nav': theme.nav,
+  };
+
+  return (
+    <div className="app" style={themeVars}>
+      <NavBar links={navLinks} activePage={page} onNavigate={navigate} />
+      <div
+        className="card"
+        role="button"
+        tabIndex={0}
+        aria-label={`Theme: ${theme.name}. Press for a random new theme`}
+        onClick={randomizeTheme}
+        onKeyDown={handleKeyDown}
+      >
+        <HeroSection greeting={content.greeting} title={content.title} body={content.body} />
+        <Footer tagline={content.tagline} />
       </div>
+      <ResetButton
+        themeName={theme.name}
+        isDefault={theme === defaultTheme && page === 'Home'}
+        onReset={resetTheme}
+      />
     </div>
   );
 }

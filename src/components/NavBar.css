@@ -1,0 +1,25 @@
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.navbar a {
+  color: var(--nav);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.navbar a:hover { color: var(--accent); }
+
+.navbar a.active {
+  color: var(--accent);
+  font-weight: 700;
+}
